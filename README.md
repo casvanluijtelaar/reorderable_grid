@@ -60,4 +60,4 @@ return MaterialApp(
 
 ## :wave: Get Involved
 
-If this package is useful to you please :thumbsup: on [pub.dev](https://pub.dev/packages) and :star: on github. If you have any Issues, recommendations or pull requests I'd love to see them!
+If this package is useful to you please :thumbsup: on [pub.dev](https://pub.dev/packages/reorderable_grid) and :star: on [github](https://github.com/casvanluijtelaar/reorderable_grid). If you have any Issues, recommendations or pull requests I'd love to see them!

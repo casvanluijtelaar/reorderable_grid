@@ -583,6 +583,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   }
 
   void _dragUpdateItems() {
+    print(_insertIndex);
     assert(_dragInfo != null);
 
     int newIndex = _insertIndex!;
@@ -796,9 +797,7 @@ class _ReorderableItemState extends State<_ReorderableItem> {
   void updateForGap(int gapIndex, bool animate) {
     if (!mounted) return;
 
-    final Offset newTargetOffset = gapIndex <= index
-        ? _listState._calculateNextDragOffset(index)
-        : Offset.zero;
+    final Offset newTargetOffset = _listState._calculateNextDragOffset(index);
 
     if (newTargetOffset == _targetOffset) return;
     _targetOffset = newTargetOffset;

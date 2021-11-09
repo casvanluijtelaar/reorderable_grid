@@ -7,7 +7,6 @@
 [![codecov](https://codecov.io/gh/casvanluijtelaar/reorderable_grid/branch/master/graph/badge.svg?token=V047CJZ1RU)](https://codecov.io/gh/casvanluijtelaar/reorderable_grid)
 
 
-
 A full reorderable grid implemention similar to Flutters Reorderable_List. withfull `ReorderableGridView`, `ReorderableGrid` and `SliverReorderableGrid`implementations
 
 

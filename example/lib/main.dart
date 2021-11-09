@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
           onReorder: _onReorder,
           childAspectRatio: 1,
           children: items.map((item) {
-            /// map every list entry to a widget and assure every child has a 
+            /// map every list entry to a widget and assure every child has a
             /// unique key
             return Card(
               key: ValueKey(item),

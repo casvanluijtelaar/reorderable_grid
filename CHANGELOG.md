@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.0.1-dev1
 
-* TODO: Describe initial release.
+*  initial publication.

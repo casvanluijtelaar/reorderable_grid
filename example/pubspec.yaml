@@ -1,0 +1,12 @@
+name: example
+description: A reorderable_grid example project.
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  reorderable_grid:
+    path: ../
+

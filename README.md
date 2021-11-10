@@ -1,4 +1,4 @@
- # :white_square_button: Reorderable Grid :white_square_button:
+ # :white_square_button: Reorderable Grid
 
 [![Pub Version](https://img.shields.io/pub/v/reorderable_grid?label=version&style=flat-square)](https://pub.dev/packages/reorderable_grid/changelog)
 [![Likes](https://badges.bar/reorderable_grid/likes)](https://pub.dev/packages/reorderable_grid/score)
@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/casvanluijtelaar/reorderable_grid/branch/master/graph/badge.svg?token=V047CJZ1RU)](https://codecov.io/gh/casvanluijtelaar/reorderable_grid)
 
 
-A full reorderable grid implemention similar to Flutters Reorderable_List. withfull `ReorderableGridView`, `ReorderableGrid` and `SliverReorderableGrid`implementations
+A full reorderable grid implemention similar to Flutters Reorderable_List. with full `ReorderableGridView`, `ReorderableGrid` and `SliverReorderableGrid` implementations
 
 
 

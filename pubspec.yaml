@@ -4,7 +4,6 @@ homepage: https://github.com/casvanluijtelaar/reorderable_grid
 repository: https://github.com/casvanluijtelaar/reorderable_grid
 version: 1.0.0
 
-
 environment:
   sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"

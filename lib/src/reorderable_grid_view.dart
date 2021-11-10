@@ -505,7 +505,7 @@ class _ReorderableGridViewState extends State<ReorderableGridView> {
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
 
-    // If the item can move to before its current position in the list.
+    // If the item can move to before its current position in the grid.
     if (index > 0) {
       semanticsActions[
               CustomSemanticsAction(label: localizations.reorderItemToStart)] =
@@ -520,7 +520,7 @@ class _ReorderableGridViewState extends State<ReorderableGridView> {
           moveBefore;
     }
 
-    // If the item can move to after its current position in the list.
+    // If the item can move to after its current position in the grid.
     if (index < widget.itemCount - 1) {
       String reorderItemAfter = localizations.reorderItemDown;
       if (widget.scrollDirection == Axis.horizontal) {
@@ -540,7 +540,7 @@ class _ReorderableGridViewState extends State<ReorderableGridView> {
     // state of the dragging item.
     //
     // We also apply the relevant custom accessibility actions for moving the item
-    // up, down, to the start, and to the end of the list.
+    // up, down, to the start, and to the end of the grid.
     return MergeSemantics(
       child: Semantics(
         customSemanticsActions: semanticsActions,

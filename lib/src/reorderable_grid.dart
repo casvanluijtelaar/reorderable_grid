@@ -18,7 +18,7 @@ import 'package:flutter/scheduler.dart';
 /// [ReorderableGridState.startItemDragReorder]. This is most easily achieved
 /// by wrapping each child in a [ReorderableGridDragStartListener] or a
 /// [ReorderableGridDelayedDragStartListener]. These will take care of recognizing
-/// the start of a drag gesture and call the list state's
+/// the start of a drag gesture and call the grid state's
 /// [ReorderableGridState.startItemDragReorder] method.
 ///
 /// This widget's [ReorderableGridState] can be used to manually start an item
@@ -57,13 +57,13 @@ class ReorderableGrid extends StatefulWidget {
   })  : assert(itemCount >= 0),
         super(key: key);
 
-  /// Called, as needed, to build list item widgets.
+  /// Called, as needed, to build grid item widgets.
   ///
   /// List items are only built when they're scrolled into view.
   ///
   /// The [IndexedWidgetBuilder] index parameter indicates the item's
-  /// position in the list. The value of the index parameter will be between
-  /// zero and one less than [itemCount]. All items in the list must have a
+  /// position in the grid. The value of the index parameter will be between
+  /// zero and one less than [itemCount]. All items in the grid must have a
   /// unique [Key], and should have some kind of listener to start the drag
   /// (usually a [ReorderableGridDragStartListener] or
   /// [ReorderableGridDelayedDragStartListener]).
@@ -186,8 +186,8 @@ class ReorderableGrid extends StatefulWidget {
   ReorderableGridState createState() => ReorderableGridState();
 }
 
-/// The state for a list that allows the user to interactively reorder
-/// the list items.
+/// The state for a grid that allows the user to interactively reorder
+/// the grid items.
 ///
 /// An app that needs to start a new item drag or cancel an existing one
 /// can refer to the [ReorderableGrid]'s state with a global key:
@@ -208,7 +208,7 @@ class ReorderableGridState extends State<ReorderableGrid> {
   ///
   /// The given [recognizer] will be used to recognize and start the drag
   /// item tracking and lead to either an item reorder, or a cancelled drag.
-  /// The list will take ownership of the returned recognizer and will dispose
+  /// The grid will take ownership of the returned recognizer and will dispose
   /// it when it is no longer needed.
   ///
   /// Most applications will not use this directly, but will wrap the item
@@ -226,7 +226,7 @@ class ReorderableGridState extends State<ReorderableGrid> {
 
   /// Cancel any item drag in progress.
   ///
-  /// This should be called before any major changes to the item list
+  /// This should be called before any major changes to the item grid
   /// occur so that any item drags will not get confused by
   /// changes to the underlying grid.
   ///
@@ -267,7 +267,7 @@ class ReorderableGridState extends State<ReorderableGrid> {
   }
 }
 
-/// A sliver grid that allows the user to interactively reorder the list items.
+/// A sliver grid that allows the user to interactively reorder the grid items.
 ///
 /// It is up to the application to wrap each child (or an internal part of the
 /// child) with a drag listener that will recognize the start of an item drag
@@ -275,7 +275,7 @@ class ReorderableGridState extends State<ReorderableGrid> {
 /// [SliverReorderableGridState.startItemDragReorder]. This is most easily
 /// achieved by wrapping each child in a [ReorderableGridDragStartListener] or
 /// a [ReorderableGridDelayedDragStartListener]. These will take care of
-/// recognizing the start of a drag gesture and call the list state's start
+/// recognizing the start of a drag gesture and call the grid state's start
 /// item drag method.
 ///
 /// This widget's [SliverReorderableGridState] can be used to manually start an item
@@ -285,10 +285,10 @@ class ReorderableGridState extends State<ReorderableGrid> {
 ///
 /// See also:
 ///
-///  * [ReorderableGrid], a regular widget list that allows the user to reorder
+///  * [ReorderableGrid], a regular widget grid that allows the user to reorder
 ///    its items.
 class SliverReorderableGrid extends StatefulWidget {
-  /// Creates a sliver list that allows the user to interactively reorder its
+  /// Creates a sliver grid that allows the user to interactively reorder its
   /// items.
   ///
   /// The [itemCount] must be greater than or equal to zero.
@@ -381,7 +381,7 @@ class SliverReorderableGrid extends StatefulWidget {
 }
 
 /// The state for a sliver grid that allows the user to interactively reorder
-/// the list items.
+/// the grid items.
 ///
 /// An app that needs to start a new item drag or cancel an existing one
 /// can refer to the [SliverReorderableGrid]'s state with a global key:
@@ -459,12 +459,12 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
 
   /// Cancel any item drag in progress.
   ///
-  /// This should be called before any major changes to the item list
+  /// This should be called before any major changes to the item grid
   /// occur so that any item drags will not get confused by
-  /// changes to the underlying list.
+  /// changes to the underlying grid.
   ///
   /// If a drag operation is in progress, this will immediately reset
-  /// the list to back to its pre-drag state.
+  /// the grid to back to its pre-drag state.
   ///
   /// If no drag is active, this will do nothing.
   void cancelReorder() {
@@ -536,7 +536,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
         // Find the location of the item we want to insert before
         _finalDropPosition = _itemOffsetAt(_insertIndex!);
       } else {
-        // Inserting into the last spot on the list. If it's the only spot, put
+        // Inserting into the last spot on the grid. If it's the only spot, put
         // it back where it was. Otherwise, grab the second to last and move
         // down by the gap.
         final int itemIndex =
@@ -677,7 +677,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     }
 
     final Widget child = widget.itemBuilder(context, index);
-    assert(child.key != null, 'All list items must have a key');
+    assert(child.key != null, 'All grid items must have a key');
 
     final OverlayState overlay = Overlay.of(context)!;
     return _ReorderableItem(
@@ -695,9 +695,9 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     final SliverChildBuilderDelegate childrenDelegate =
         SliverChildBuilderDelegate(
       _itemBuilder,
-      // When dragging, the dragged item is still in the list but has been replaced
+      // When dragging, the dragged item is still in the grid but has been replaced
       // by a zero height SizedBox, so that the gap can move around. To make the
-      // list extent stable we add a dummy entry to the end.
+      // grid extent stable we add a dummy entry to the end.
       childCount: widget.itemCount + (_dragInfo != null ? 1 : 0),
     );
     return SliverGrid(
@@ -857,23 +857,23 @@ class _ReorderableItemState extends State<_ReorderableItem> {
 
 /// A wrapper widget that will recognize the start of a drag on the wrapped
 /// widget by a [PointerDownEvent], and immediately initiate dragging the
-/// wrapped item to a new location in a reorderable list.
+/// wrapped item to a new location in a reorderable grid.
 ///
 /// See also:
 ///
 ///  * [ReorderableGridDelayedDragStartListener], a similar wrapper that will
 ///    only recognize the start after a long press event.
-///  * [ReorderableGrid], a widget list that allows the user to reorder
+///  * [ReorderableGrid], a widget grid that allows the user to reorder
 ///    its items.
-///  * [SliverReorderableGrid], a sliver list that allows the user to reorder
+///  * [SliverReorderableGrid], a sliver grid that allows the user to reorder
 ///    its items.
-///  * [ReorderableGridView], a material design list that allows the user to
+///  * [ReorderableGridView], a material design grid that allows the user to
 ///    reorder its items.
 class ReorderableGridDragStartListener extends StatelessWidget {
   /// Creates a listener for a drag immediately following a pointer down
   /// event over the given child widget.
   ///
-  /// This is most commonly used to wrap part of a list item like a drag
+  /// This is most commonly used to wrap part of a grid item like a drag
   /// handle.
   const ReorderableGridDragStartListener({
     Key? key,
@@ -883,15 +883,15 @@ class ReorderableGridDragStartListener extends StatelessWidget {
   }) : super(key: key);
 
   /// The widget for which the application would like to respond to a tap and
-  /// drag gesture by starting a reordering drag on a reorderable list.
+  /// drag gesture by starting a reordering drag on a reorderable grid.
   final Widget child;
 
-  /// The index of the associated item that will be dragged in the list.
+  /// The index of the associated item that will be dragged in the grid.
   final int index;
 
-  /// Whether the [child] item can be dragged and moved in the list.
+  /// Whether the [child] item can be dragged and moved in the grid.
   ///
-  /// If true, the item can be moved to another location in the list when the
+  /// If true, the item can be moved to another location in the grid when the
   /// user taps on the child. If false, tapping on the child will be ignored.
   final bool enabled;
 
@@ -928,25 +928,25 @@ class ReorderableGridDragStartListener extends StatelessWidget {
 
 /// A wrapper widget that will recognize the start of a drag operation by
 /// looking for a long press event. Once it is recognized, it will start
-/// a drag operation on the wrapped item in the reorderable list.
+/// a drag operation on the wrapped item in the reorderable grid.
 ///
 /// See also:
 ///
 ///  * [ReorderableGridDragStartListener], a similar wrapper that will
 ///    recognize the start of the drag immediately after a pointer down event.
-///  * [ReorderableGrid], a widget list that allows the user to reorder
+///  * [ReorderableGrid], a widget grid that allows the user to reorder
 ///    its items.
-///  * [SliverReorderableGrid], a sliver list that allows the user to reorder
+///  * [SliverReorderableGrid], a sliver grid that allows the user to reorder
 ///    its items.
-///  * [ReorderableGridView], a material design list that allows the user to
+///  * [ReorderableGridView], a material design grid that allows the user to
 ///    reorder its items.
 class ReorderableGridDelayedDragStartListener
     extends ReorderableGridDragStartListener {
   /// Creates a listener for an drag following a long press event over the
   /// given child widget.
   ///
-  /// This is most commonly used to wrap an entire list item in a reorderable
-  /// list.
+  /// This is most commonly used to wrap an entire grid item in a reorderable
+  /// grid.
   const ReorderableGridDelayedDragStartListener({
     Key? key,
     required Widget child,
@@ -1094,7 +1094,7 @@ class _DragItemProxy extends StatelessWidget {
     final Offset overlayOrigin = _overlayOrigin(context);
 
     return MediaQuery(
-      // Remove the top padding so that any nested list views in the item
+      // Remove the top padding so that any nested grid views in the item
       // won't pick up the scaffold's padding in the overlay.
       data: MediaQuery.of(context).removePadding(removeTop: true),
       child: AnimatedBuilder(

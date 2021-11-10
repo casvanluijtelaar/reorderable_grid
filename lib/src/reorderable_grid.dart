@@ -583,7 +583,6 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   }
 
   void _dragUpdateItems() {
-    print(_insertIndex);
     assert(_dragInfo != null);
 
     int newIndex = _insertIndex!;

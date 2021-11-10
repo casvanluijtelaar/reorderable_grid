@@ -90,7 +90,6 @@ void main() {
     expect(find.text('after'), findsOneWidget);
   });
 
-
   testWidgets(
       'SliverReorderableGrid, items inherit DefaultTextStyle, IconTheme',
       (WidgetTester tester) async {
@@ -152,7 +151,6 @@ void main() {
     expect(getIconStyle().color, iconColor);
     expect(getTextStyle().color, textColor);
   });
-
 
   testWidgets(
       'ReorderableGrid supports items with nested list views without throwing layout exception.',
@@ -262,223 +260,110 @@ void main() {
     expect(tester.getTopLeft(find.text('item 0')), const Offset(0, 400));
   });
 
-  group('ReorderableGridDragStartListener', () {
-    testWidgets('It should allow the item to be dragged when enabled is true',
-        (WidgetTester tester) async {
-      const int itemCount = 5;
-      int onReorderCallCount = 0;
-      final List<int> items =
-          List<int>.generate(itemCount, (int index) => index);
+  testWidgets(
+      'ReorderableGridDragStartListener should allow the item to be dragged when enabled is true',
+      (WidgetTester tester) async {
+    const int itemCount = 5;
+    int onReorderCallCount = 0;
+    final List<int> items = List<int>.generate(itemCount, (int index) => index);
 
-      void handleReorder(int fromIndex, int toIndex) {
-        onReorderCallCount += 1;
-        if (toIndex > fromIndex) {
-          toIndex -= 1;
-        }
-        items.insert(toIndex, items.removeAt(fromIndex));
+    void handleReorder(int fromIndex, int toIndex) {
+      onReorderCallCount += 1;
+      if (toIndex > fromIndex) {
+        toIndex -= 1;
       }
+      items.insert(toIndex, items.removeAt(fromIndex));
+    }
 
-      // The list has five elements of height 100
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ReorderableGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-            ),
-            itemCount: itemCount,
-            itemBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                key: ValueKey<int>(items[index]),
-                height: 100,
-                child: ReorderableGridDragStartListener(
-                  index: index,
-                  child: Text('item ${items[index]}'),
-                ),
-              );
-            },
-            onReorder: handleReorder,
+    // The list has five elements of height 100
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ReorderableGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 6,
           ),
+          itemCount: itemCount,
+          itemBuilder: (BuildContext context, int index) {
+            return SizedBox(
+              key: ValueKey<int>(items[index]),
+              height: 100,
+              child: ReorderableGridDragStartListener(
+                index: index,
+                child: Text('item ${items[index]}'),
+              ),
+            );
+          },
+          onReorder: handleReorder,
         ),
-      );
+      ),
+    );
 
-      // Start gesture on first item
-      final TestGesture drag =
-          await tester.startGesture(tester.getCenter(find.text('item 0')));
-      await tester.pump(kPressTimeout);
+    // Start gesture on first item
+    final TestGesture drag =
+        await tester.startGesture(tester.getCenter(find.text('item 0')));
+    await tester.pump(kPressTimeout);
 
-      // Drag enough to move down the first item
-      await drag.moveBy(const Offset(0, 50));
-      await tester.pump();
-      await drag.up();
-      await tester.pumpAndSettle();
+    // Drag enough to move down the first item
+    await drag.moveBy(const Offset(200, 50));
+    await tester.pump();
+    await drag.up();
+    await tester.pumpAndSettle();
 
-      expect(onReorderCallCount, 1);
-      expect(items, orderedEquals(<int>[1, 0, 2, 3, 4]));
-    });
-
-    testWidgets('It should allow the item to be dragged when enabled is true',
-        (WidgetTester tester) async {
-      const int itemCount = 5;
-      int onReorderCallCount = 0;
-      final List<int> items =
-          List<int>.generate(itemCount, (int index) => index);
-
-      void handleReorder(int fromIndex, int toIndex) {
-        onReorderCallCount += 1;
-        if (toIndex > fromIndex) {
-          toIndex -= 1;
-        }
-        items.insert(toIndex, items.removeAt(fromIndex));
-      }
-
-      // The list has five elements of height 100
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ReorderableGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-            ),
-            itemCount: itemCount,
-            itemBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                key: ValueKey<int>(items[index]),
-                height: 100,
-                child: ReorderableGridDragStartListener(
-                  index: index,
-                  enabled: false,
-                  child: Text('item ${items[index]}'),
-                ),
-              );
-            },
-            onReorder: handleReorder,
-          ),
-        ),
-      );
-
-      // Start gesture on first item
-      final TestGesture drag =
-          await tester.startGesture(tester.getCenter(find.text('item 0')));
-      await tester.pump(kLongPressTimeout);
-
-      // Drag enough to move down the first item
-      await drag.moveBy(const Offset(0, 150));
-      await tester.pump();
-      await drag.up();
-      await tester.pumpAndSettle();
-
-      expect(onReorderCallCount, 0);
-      expect(items, orderedEquals(<int>[0, 1, 2, 3, 4]));
-    });
+    expect(onReorderCallCount, 1);
+    expect(items, orderedEquals(<int>[1, 0, 2, 3, 4]));
   });
 
-  group('ReorderableGridDelayedDragStartListener', () {
-    testWidgets('It should allow the item to be dragged when enabled is true',
-        (WidgetTester tester) async {
-      const int itemCount = 5;
-      int onReorderCallCount = 0;
-      final List<int> items =
-          List<int>.generate(itemCount, (int index) => index);
+  testWidgets(
+      'ReorderableGridDelayedDragStartListener should allow the item to be dragged when enabled is true',
+      (WidgetTester tester) async {
+    const int itemCount = 5;
+    int onReorderCallCount = 0;
+    final List<int> items = List<int>.generate(itemCount, (int index) => index);
 
-      void handleReorder(int fromIndex, int toIndex) {
-        onReorderCallCount += 1;
-        if (toIndex > fromIndex) {
-          toIndex -= 1;
-        }
-        items.insert(toIndex, items.removeAt(fromIndex));
-      }
+    void handleReorder(int fromIndex, int toIndex) {
+      onReorderCallCount += 1;
+      final item = items.removeAt(fromIndex);
+      items.insert(toIndex, item);
+    }
 
-      // The list has five elements of height 100
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ReorderableGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-            ),
-            itemCount: itemCount,
-            itemBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                key: ValueKey<int>(items[index]),
-                height: 100,
-                child: ReorderableGridDelayedDragStartListener(
-                  index: index,
-                  child: Text('item ${items[index]}'),
-                ),
-              );
-            },
-            onReorder: handleReorder,
+    // The list has five elements of height 100
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ReorderableGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 6,
           ),
+          itemCount: itemCount,
+          itemBuilder: (BuildContext context, int index) {
+            return SizedBox(
+              key: ValueKey<int>(items[index]),
+              height: 100,
+              child: ReorderableGridDelayedDragStartListener(
+                index: index,
+                child: Text('item ${items[index]}'),
+              ),
+            );
+          },
+          onReorder: handleReorder,
         ),
-      );
-      await tester.pumpAndSettle();
+      ),
+      const Duration(milliseconds: 100),
+    );
+    await tester.pumpAndSettle();
 
-      // Start gesture on first item
-      final TestGesture drag =
-          await tester.startGesture(tester.getCenter(find.text('item 0')));
-      await tester.pump(kLongPressTimeout);
+    // Start gesture on first item
+    final TestGesture drag =
+        await tester.startGesture(tester.getCenter(find.text('item 0')));
+    await tester.pump(kLongPressTimeout);
 
-      // Drag enough to move down the first item
-      await drag.moveBy(const Offset(0, 50));
-      await tester.pump();
-      await drag.up();
-      await tester.pumpAndSettle();
+    // Drag enough to move down the first item
+    await drag.moveBy(const Offset(110, 10));
+    await tester.pump();
+    await drag.up();
+    await tester.pumpAndSettle();
 
-      expect(onReorderCallCount, 1);
-      expect(items, orderedEquals(<int>[1, 0, 2, 3, 4]));
-    });
-
-    testWidgets('It should allow the item to be dragged when enabled is true',
-        (WidgetTester tester) async {
-      const int itemCount = 5;
-      int onReorderCallCount = 0;
-      final List<int> items =
-          List<int>.generate(itemCount, (int index) => index);
-
-      void handleReorder(int fromIndex, int toIndex) {
-        onReorderCallCount += 1;
-        if (toIndex > fromIndex) {
-          toIndex -= 1;
-        }
-        items.insert(toIndex, items.removeAt(fromIndex));
-      }
-
-      // The list has five elements of height 100
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ReorderableGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-            ),
-            itemCount: itemCount,
-            itemBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                key: ValueKey<int>(items[index]),
-                height: 100,
-                child: ReorderableDelayedDragStartListener(
-                  index: index,
-                  enabled: false,
-                  child: Text('item ${items[index]}'),
-                ),
-              );
-            },
-            onReorder: handleReorder,
-          ),
-        ),
-      );
-
-      // Start gesture on first item
-      final TestGesture drag =
-          await tester.startGesture(tester.getCenter(find.text('item 0')));
-      await tester.pump(kLongPressTimeout);
-
-      // Drag enough to move down the first item
-      await drag.moveBy(const Offset(0, 50));
-      await tester.pump();
-      await drag.up();
-      await tester.pumpAndSettle();
-
-      expect(onReorderCallCount, 0);
-      expect(items, orderedEquals(<int>[0, 1, 2, 3, 4]));
-    });
+    expect(onReorderCallCount, 1);
+    expect(items, orderedEquals(<int>[1, 0, 2, 3, 4]));
   });
 }
 

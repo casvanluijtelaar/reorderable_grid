@@ -180,6 +180,7 @@ void main() {
             home: reorderableGridView,
           ),
           const Duration(milliseconds: 100));
+      
       final dynamic exception = tester.takeException();
       expect(exception, isNotNull);
     });

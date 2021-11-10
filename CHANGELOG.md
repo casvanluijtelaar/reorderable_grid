@@ -1,3 +1,9 @@
+## 1.0.1
+
+*  documentation updates
+*  test coverage!
+
+
 ## 1.0.0
 
 *  implemented `ReorderableGridView`, `ReorderableGrid` & `SliverReorderableGrid`

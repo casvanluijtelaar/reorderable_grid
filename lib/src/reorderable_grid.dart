@@ -541,7 +541,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
         // down by the gap.
         final int itemIndex =
             _items.length > 1 ? _insertIndex! - 1 : _insertIndex!;
-        _finalDropPosition = item.itemSize.center(_itemOffsetAt(itemIndex));
+        _finalDropPosition = _itemOffsetAt(itemIndex);
       }
     });
   }

@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 
 /// {@template reorderable_grid_view.reorderable_grid}
 /// A scrolling container that allows the user to interactively reorder the
@@ -531,19 +529,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   }
 
   void _dragEnd(_DragInfo item) {
-    setState(() {
-      if (_insertIndex! < widget.itemCount - 1) {
-        // Find the location of the item we want to insert before
-        _finalDropPosition = _itemOffsetAt(_insertIndex!);
-      } else {
-        // Inserting into the last spot on the grid. If it's the only spot, put
-        // it back where it was. Otherwise, grab the second to last and move
-        // down by the gap.
-        final int itemIndex =
-            _items.length > 1 ? _insertIndex! - 1 : _insertIndex!;
-        _finalDropPosition = _itemOffsetAt(itemIndex);
-      }
-    });
+    setState(() => _finalDropPosition = _itemOffsetAt(_insertIndex!));
   }
 
   void _dropCompleted() {

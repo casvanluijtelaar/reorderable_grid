@@ -1,68 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reorderable_grid/reorderable_grid.dart';
 
 void main() {
   const double itemHeight = 48.0;
-  const List<String> originalListItems = <String>[
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4'
-  ];
-  late List<String> listItems;
-
-  void onReorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-    final String element = listItems.removeAt(oldIndex);
-    listItems.insert(newIndex, element);
-  }
-
-  Widget listItemToWidget(String listItem) {
-    return SizedBox(
-      key: Key(listItem),
-      height: itemHeight,
-      width: itemHeight,
-      child: Text(listItem),
-    );
-  }
-
-  Widget build({
-    Widget? header,
-    Axis scrollDirection = Axis.vertical,
-    bool reverse = false,
-    EdgeInsets padding = EdgeInsets.zero,
-    TextDirection textDirection = TextDirection.ltr,
-    TargetPlatform? platform,
-  }) {
-    return MaterialApp(
-      theme: ThemeData(platform: platform),
-      home: Directionality(
-        textDirection: textDirection,
-        child: SizedBox(
-          height: itemHeight * 10,
-          width: itemHeight * 10,
-          child: ReorderableGridView.count(
-            crossAxisCount: 4,
-            scrollDirection: scrollDirection,
-            onReorder: onReorder,
-            reverse: reverse,
-            padding: padding,
-            children: listItems.map<Widget>(listItemToWidget).toList(),
-          ),
-        ),
-      ),
-    );
-  }
-
-  setUp(() {
-    // Copy the original list into listItems.
-    listItems = originalListItems.toList();
-  });
 
   testWidgets('ReorderableGridView.builder asserts on negative childCount',
       (WidgetTester tester) async {

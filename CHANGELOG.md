@@ -1,3 +1,6 @@
+## 1.0.3
+*  dependency updates
+
 ## 1.0.2
 *  fixed issue with drop animation 
 

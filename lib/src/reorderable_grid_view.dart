@@ -3,7 +3,6 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:reorderable_grid/src/reorderable_grid.dart';
 
 /// A scrollable, reorderable, 2D array of widgets.

@@ -52,6 +52,7 @@ class ReorderableGrid extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
+    this.autoScroll,
   })  : assert(itemCount >= 0),
         super(key: key);
 
@@ -120,6 +121,10 @@ class ReorderableGrid extends StatefulWidget {
   final Clip clipBehavior;
 
   final SliverGridDelegate gridDelegate;
+
+  /// Overrides if autoscrolling is enabled. Defaults to false if `physics` is
+  /// [NeverScrollableScrollPhysics]
+  final bool? autoScroll;
 
   /// The state from the closest instance of this class that encloses the given
   /// context.
@@ -258,6 +263,8 @@ class ReorderableGridState extends State<ReorderableGrid> {
             itemCount: widget.itemCount,
             onReorder: widget.onReorder,
             proxyDecorator: widget.proxyDecorator,
+            autoScroll: widget.autoScroll ??
+                widget.physics is! NeverScrollableScrollPhysics,
           ),
         ),
       ],
@@ -297,6 +304,7 @@ class SliverReorderableGrid extends StatefulWidget {
     required this.onReorder,
     required this.gridDelegate,
     this.proxyDecorator,
+    this.autoScroll = true,
   })  : assert(itemCount >= 0),
         super(key: key);
 
@@ -313,6 +321,10 @@ class SliverReorderableGrid extends StatefulWidget {
   final ReorderItemProxyDecorator? proxyDecorator;
 
   final SliverGridDelegate gridDelegate;
+
+  /// If auto scrolling is enabled. Should be disabled if associated scroll
+  /// physics are [NeverScrollableScrollPhysics]
+  final bool autoScroll;
 
   @override
   SliverReorderableGridState createState() => SliverReorderableGridState();
@@ -589,7 +601,10 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   }
 
   Future<void> _autoScrollIfNecessary() async {
-    if (_autoScrolling || _dragInfo == null || _dragInfo!.scrollable == null) {
+    if (_autoScrolling ||
+        _dragInfo == null ||
+        _dragInfo!.scrollable == null ||
+        widget.autoScroll == false) {
       return;
     }
 

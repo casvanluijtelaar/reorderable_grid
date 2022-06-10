@@ -637,12 +637,6 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     double scrollWindowEnd = scrollWindowStart +
         (isVertical ? scrollRenderBox.size.height : scrollRenderBox.size.width);
 
-    if (isReversed) {
-      final temp = scrollWindowStart;
-      scrollWindowStart = scrollWindowEnd;
-      scrollWindowEnd = temp;
-    }
-
     /// get the proxy (dragged) object's position on the screen
     final proxyObjectPosition = _dragInfo!.dragPosition - _dragInfo!.dragOffset;
 
@@ -651,12 +645,6 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
         isVertical ? proxyObjectPosition.dy : proxyObjectPosition.dx;
     double proxyObjectEnd = proxyObjectStart +
         (isVertical ? _dragInfo!.itemSize.height : _dragInfo!.itemSize.width);
-
-    if (isReversed) {
-      final temp = proxyObjectStart;
-      proxyObjectStart = proxyObjectEnd;
-      proxyObjectEnd = temp;
-    }
 
     /// if start of proxy object is before scroll window
     if (proxyObjectStart < scrollWindowStart &&
@@ -673,30 +661,6 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
       newOffset = min(position.maxScrollExtent,
           position.pixels + step * overDrag / overDragCoef);
     }
-
-    /* 
-    final scrollRenderBox =
-        _dragInfo!.scrollable!.context.findRenderObject()! as RenderBox;
-    final Offset scrollOrigin = scrollRenderBox.localToGlobal(Offset.zero);
-
-    final scrollStart = scrollOrigin.dy;
-    final scrollEnd = scrollStart + scrollRenderBox.size.height;
-
-    final double proxyStart =
-        (_dragInfo!.dragPosition - _dragInfo!.dragOffset).dy;
-    final double proxyEnd = proxyStart + _dragInfo!.itemSize.height;
-
-    if (proxyStart < scrollStart &&
-        position.pixels > position.minScrollExtent) {
-      final double overDrag = max(scrollStart - proxyStart, overDragMax);
-      newOffset = max(position.minScrollExtent,
-          position.pixels - step * overDrag / overDragCoef);
-    } else if (proxyEnd > scrollEnd &&
-        position.pixels < position.maxScrollExtent) {
-      final double overDrag = max(proxyEnd - scrollEnd, overDragMax);
-      newOffset = min(position.maxScrollExtent,
-          position.pixels + step * overDrag / overDragCoef);
-    } */
 
     if (newOffset != null && (newOffset - position.pixels).abs() >= 1.0) {
       _autoScrolling = true;

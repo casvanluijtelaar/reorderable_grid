@@ -646,20 +646,39 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     double proxyObjectEnd = proxyObjectStart +
         (isVertical ? _dragInfo!.itemSize.height : _dragInfo!.itemSize.width);
 
-    /// if start of proxy object is before scroll window
-    if (proxyObjectStart < scrollWindowStart &&
-        position.pixels > position.minScrollExtent) {
-      final overDrag = max(scrollWindowStart - proxyObjectStart, overDragMax);
-      newOffset = max(position.minScrollExtent,
-          position.pixels - step * overDrag / overDragCoef);
-    }
 
-    /// if end of proxy object is after scroll window
-    else if (proxyObjectEnd > scrollWindowEnd &&
-        position.pixels < position.maxScrollExtent) {
-      final overDrag = max(proxyObjectEnd - scrollWindowEnd, overDragMax);
-      newOffset = min(position.maxScrollExtent,
-          position.pixels + step * overDrag / overDragCoef);
+    if (!isReversed) {
+      /// if start of proxy object is before scroll window
+      if (proxyObjectStart < scrollWindowStart &&
+          position.pixels > position.minScrollExtent) {
+        final overDrag = max(scrollWindowStart - proxyObjectStart, overDragMax);
+        newOffset = max(position.minScrollExtent,
+            position.pixels - step * overDrag / overDragCoef);
+      }
+
+      /// if end of proxy object is after scroll window
+      else if (proxyObjectEnd > scrollWindowEnd &&
+          position.pixels < position.maxScrollExtent) {
+        final overDrag = max(proxyObjectEnd - scrollWindowEnd, overDragMax);
+        newOffset = min(position.maxScrollExtent,
+            position.pixels + step * overDrag / overDragCoef);
+      }
+    } else {
+      /// if start of proxy object is before scroll window
+      if (proxyObjectStart < scrollWindowStart &&
+          position.pixels < position.maxScrollExtent) {
+        final overDrag = max(scrollWindowStart - proxyObjectStart, overDragMax);
+        newOffset = max(position.minScrollExtent,
+            position.pixels + step * overDrag / overDragCoef);
+      }
+
+      /// if end of proxy object is after scroll window
+      else if (proxyObjectEnd > scrollWindowEnd &&
+          position.pixels > position.minScrollExtent) {
+        final overDrag = max(proxyObjectEnd - scrollWindowEnd, overDragMax);
+        newOffset = min(position.maxScrollExtent,
+            position.pixels - step * overDrag / overDragCoef);
+      }
     }
 
     if (newOffset != null && (newOffset - position.pixels).abs() >= 1.0) {

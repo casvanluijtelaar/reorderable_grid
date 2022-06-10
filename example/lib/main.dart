@@ -29,7 +29,6 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: ReorderableGridView.extent(
-          reverse: true,
           maxCrossAxisExtent: 250,
           onReorder: _onReorder,
           childAspectRatio: 1,

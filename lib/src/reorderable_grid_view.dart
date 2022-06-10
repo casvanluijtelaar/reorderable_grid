@@ -635,6 +635,7 @@ class _ReorderableGridViewState extends State<ReorderableGridView> {
             proxyDecorator: widget.proxyDecorator ?? _proxyDecorator,
             autoScroll: widget.autoScroll ??
                 widget.physics is! NeverScrollableScrollPhysics,
+            scrollDirection: widget.scrollDirection,
           ),
         ),
       ],

@@ -408,6 +408,7 @@ class _TestGridState extends State<TestGrid> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: widget.crossAxisCount,
                       ),
+                      reverse: widget.reverse,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           key: ValueKey<int>(items[index]),

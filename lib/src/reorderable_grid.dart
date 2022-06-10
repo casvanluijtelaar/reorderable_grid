@@ -646,7 +646,6 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     double proxyObjectEnd = proxyObjectStart +
         (isVertical ? _dragInfo!.itemSize.height : _dragInfo!.itemSize.width);
 
-
     if (!isReversed) {
       /// if start of proxy object is before scroll window
       if (proxyObjectStart < scrollWindowStart &&

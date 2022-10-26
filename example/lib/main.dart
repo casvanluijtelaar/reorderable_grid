@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: ReorderableGridView.extent(
-          maxCrossAxisExtent: 250,
+          maxCrossAxisExtent: 150,
           onReorder: _onReorder,
           childAspectRatio: 1,
           children: items.map((item) {

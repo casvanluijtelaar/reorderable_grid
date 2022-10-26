@@ -505,6 +505,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
 
   Drag? _dragStart(Offset position) {
     assert(_dragInfo == null);
+
     final _ReorderableItemState item = _items[_dragIndex!]!;
     item.dragging = true;
     item.rebuild();
@@ -593,7 +594,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     int newIndex = _insertIndex!;
 
     for (final _ReorderableItemState item in _items.values) {
-      if (item.index == _dragIndex! || !item.mounted) continue;
+      if (!item.mounted) continue;
 
       final Rect geometry = item.targetGeometry();
       if (geometry.contains(_dragInfo!.dragPosition)) newIndex = item.index;
@@ -1187,5 +1188,5 @@ class _ReorderableItemGlobalKey extends GlobalObjectKey {
   }
 
   @override
-  int get hashCode => hashValues(subKey, index, state);
+  int get hashCode => Object.hash(subKey, index, state);
 }

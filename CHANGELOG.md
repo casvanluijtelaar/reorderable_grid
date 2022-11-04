@@ -1,3 +1,5 @@
+## 1.0.5
+* update depricated hashcodes
 ## 1.0.4
 * fixes [Auto-scroll does not respect reverse:true](https://github.com/casvanluijtelaar/reorderable_grid/issues/9), auto scroll now works in every direction on every axis
 

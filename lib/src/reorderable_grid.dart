@@ -593,11 +593,18 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
 
     int newIndex = _insertIndex!;
 
+    final dragCenter = _dragInfo!.itemSize
+        .center(_dragInfo!.dragPosition - _dragInfo!.dragOffset);
+
     for (final _ReorderableItemState item in _items.values) {
       if (!item.mounted) continue;
 
-      final Rect geometry = item.targetGeometry();
-      if (geometry.contains(_dragInfo!.dragPosition)) newIndex = item.index;
+      final Rect geometry = item.targetGeometryNonOffset();
+
+      if (geometry.contains(dragCenter)) {
+        newIndex = item.index;
+        break;
+      }
     }
 
     if (newIndex == _insertIndex) return;
@@ -737,10 +744,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     final SliverChildBuilderDelegate childrenDelegate =
         SliverChildBuilderDelegate(
       _itemBuilder,
-      // When dragging, the dragged item is still in the grid but has been replaced
-      // by a zero height SizedBox, so that the gap can move around. To make the
-      // grid extent stable we add a dummy entry to the end.
-      childCount: widget.itemCount + (_dragInfo != null ? 1 : 0),
+      childCount: widget.itemCount,
     );
     return SliverGrid(
       delegate: childrenDelegate,
@@ -887,6 +891,12 @@ class _ReorderableItemState extends State<_ReorderableItem> {
     final RenderBox itemRenderBox = context.findRenderObject()! as RenderBox;
     final Offset itemPosition =
         itemRenderBox.localToGlobal(Offset.zero) + _targetOffset;
+    return itemPosition & itemRenderBox.size;
+  }
+
+  Rect targetGeometryNonOffset() {
+    final RenderBox itemRenderBox = context.findRenderObject()! as RenderBox;
+    final Offset itemPosition = itemRenderBox.localToGlobal(Offset.zero);
     return itemPosition & itemRenderBox.size;
   }
 

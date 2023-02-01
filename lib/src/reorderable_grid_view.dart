@@ -486,10 +486,10 @@ class ReorderableGridView extends StatefulWidget {
   final bool? autoScroll;
 
   @override
-  _ReorderableGridViewState createState() => _ReorderableGridViewState();
+  ReorderableGridViewState createState() => ReorderableGridViewState();
 }
 
-class _ReorderableGridViewState extends State<ReorderableGridView> {
+class ReorderableGridViewState extends State<ReorderableGridView> {
   Widget _wrapWithSemantics(Widget child, int index) {
     void reorder(int startIndex, int endIndex) {
       if (startIndex != endIndex) {

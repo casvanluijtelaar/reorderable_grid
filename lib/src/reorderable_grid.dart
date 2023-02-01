@@ -524,7 +524,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     );
     _dragInfo!.startDrag();
 
-    final OverlayState overlay = Overlay.of(context)!;
+    final OverlayState overlay = Overlay.of(context);
     assert(_overlayEntry == null);
     _overlayEntry = OverlayEntry(builder: _dragInfo!.createProxy);
     overlay.insert(_overlayEntry!);
@@ -728,7 +728,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     final Widget child = widget.itemBuilder(context, index);
     assert(child.key != null, 'All grid items must have a key');
 
-    final OverlayState overlay = Overlay.of(context)!;
+    final OverlayState overlay = Overlay.of(context);
     return _ReorderableItem(
       key: _ReorderableItemGlobalKey(child.key!, index, this),
       index: index,
@@ -1114,7 +1114,7 @@ class _DragInfo extends Drag {
 }
 
 Offset _overlayOrigin(BuildContext context) {
-  final OverlayState overlay = Overlay.of(context)!;
+  final OverlayState overlay = Overlay.of(context);
   final RenderBox overlayBox = overlay.context.findRenderObject()! as RenderBox;
   return overlayBox.localToGlobal(Offset.zero);
 }

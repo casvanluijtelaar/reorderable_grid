@@ -4,6 +4,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:reorderable_grid/src/reorderable_grid.dart';
+import 'package:reorderable_grid/src/typedefs.dart';
+
+bool _defaultItemDragEnable(int index) => true;
 
 /// A scrollable, reorderable, 2D array of widgets.
 ///
@@ -245,6 +248,7 @@ class ReorderableGridView extends StatefulWidget {
     this.padding,
     required this.gridDelegate,
     required this.onReorder,
+    this.itemDragEnable = _defaultItemDragEnable,
     this.cacheExtent,
     List<Widget> children = const <Widget>[],
     this.semanticChildCount,
@@ -296,6 +300,7 @@ class ReorderableGridView extends StatefulWidget {
     required this.itemBuilder,
     required this.itemCount,
     required this.onReorder,
+    this.itemDragEnable = _defaultItemDragEnable,
     this.cacheExtent,
     this.semanticChildCount,
     this.dragStartBehavior = DragStartBehavior.start,
@@ -334,6 +339,7 @@ class ReorderableGridView extends StatefulWidget {
     this.padding,
     required int crossAxisCount,
     required this.onReorder,
+    this.itemDragEnable = _defaultItemDragEnable,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
     double childAspectRatio = 1.0,
@@ -387,6 +393,7 @@ class ReorderableGridView extends StatefulWidget {
     this.padding,
     required double maxCrossAxisExtent,
     required this.onReorder,
+    this.itemDragEnable = _defaultItemDragEnable,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
     double childAspectRatio = 1.0,
@@ -471,6 +478,9 @@ class ReorderableGridView extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.itemBuilder}
   final IndexedWidgetBuilder itemBuilder;
+
+  /// Which item should enable drag and drop behaviour
+  final IndexedValueGetter<bool> itemDragEnable;
 
   /// {@macro flutter.widgets.reorderable_list.itemCount}
   final int itemCount;
@@ -570,6 +580,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
     final Widget itemWithSemantics = _wrapWithSemantics(item, index);
     final Key itemGlobalKey =
         _ReorderableGridViewChildGlobalKey(item.key!, this);
+    final bool enable = widget.itemDragEnable(index);
 
     switch (Theme.of(context).platform) {
       case TargetPlatform.linux:
@@ -578,6 +589,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
         return ReorderableGridDragStartListener(
           key: itemGlobalKey,
           index: index,
+          enabled: enable,
           child: itemWithSemantics,
         );
       case TargetPlatform.iOS:
@@ -586,6 +598,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
         return ReorderableGridDelayedDragStartListener(
           key: itemGlobalKey,
           index: index,
+          enabled: enable,
           child: itemWithSemantics,
         );
     }

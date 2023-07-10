@@ -1,3 +1,7 @@
+## 1.0.7
+* support latest SDK versions
+* fix scrollcontroller, thanks to [Hilbert2048](https://github.com/casvanluijtelaar/reorderable_grid/pull/27)
+
 ## 1.0.6
 * dart 3 update
 * fixes positioning quirks [#12](https://github.com/casvanluijtelaar/reorderable_grid/issues/12), [#14](https://github.com/casvanluijtelaar/reorderable_grid/issues/14) and [#15](https://github.com/casvanluijtelaar/reorderable_grid/issues/15), thanks to [olov-dev](https://github.com/casvanluijtelaar/reorderable_grid/pull/17)!

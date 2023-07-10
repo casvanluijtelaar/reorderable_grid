@@ -252,7 +252,6 @@ class ReorderableGridView extends StatefulWidget {
     this.clipBehavior = Clip.hardEdge,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
-    this.scrollController,
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
@@ -302,7 +301,6 @@ class ReorderableGridView extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
-    this.scrollController,
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
@@ -344,7 +342,6 @@ class ReorderableGridView extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
-    this.scrollController,
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
@@ -397,7 +394,6 @@ class ReorderableGridView extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.restorationId,
     this.clipBehavior = Clip.hardEdge,
-    this.scrollController,
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
@@ -427,9 +423,6 @@ class ReorderableGridView extends StatefulWidget {
 
   /// {@macro flutter.widgets.scroll_view.reverse}
   final bool reverse;
-
-  /// {@macro flutter.widgets.scroll_view.controller}
-  final ScrollController? scrollController;
 
   /// {@macro flutter.widgets.scroll_view.primary}
 
@@ -614,7 +607,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
     return CustomScrollView(
       scrollDirection: widget.scrollDirection,
       reverse: widget.reverse,
-      controller: widget.scrollController,
+      controller: widget.controller,
       primary: widget.primary,
       physics: widget.physics,
       shrinkWrap: widget.shrinkWrap,

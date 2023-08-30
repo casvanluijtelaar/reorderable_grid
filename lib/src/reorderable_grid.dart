@@ -322,7 +322,7 @@ class SliverReorderableGrid extends StatefulWidget {
   /// {@macro flutter.widgets.reorderable_list.onReorder}
   final ReorderCallback onReorder;
 
-  final Function(Offset, Offset)? onItemDragUpdate;
+  final Function(Offset position, Offset delta)? onItemDragUpdate;
 
   /// {@macro flutter.widgets.reorderable_list.proxyDecorator}
   final ReorderItemProxyDecorator? proxyDecorator;

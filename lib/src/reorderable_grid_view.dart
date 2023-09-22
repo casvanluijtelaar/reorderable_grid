@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderable_grid/src/reorderable_grid.dart';
 import 'package:reorderable_grid/src/typedefs.dart';
 
-bool _defaultItemDragEnable(int index) => true;
 
 /// A scrollable, reorderable, 2D array of widgets.
 ///
@@ -490,6 +489,9 @@ class ReorderableGridView extends StatefulWidget {
 
   @override
   ReorderableGridViewState createState() => ReorderableGridViewState();
+
+  static bool _defaultItemDragEnable(int index) => true;
+
 }
 
 class ReorderableGridViewState extends State<ReorderableGridView> {

@@ -471,7 +471,7 @@ class ReorderableGridView extends StatefulWidget {
   /// {@macro flutter.widgets.reorderable_list.itemBuilder}
   final IndexedWidgetBuilder itemBuilder;
 
-  /// Which item should enable drag and drop behaviour
+  /// Allows you to manually overwrite which items can be dragged or not
   final IndexedValueGetter<bool> itemDragEnable;
 
   /// {@macro flutter.widgets.reorderable_list.itemCount}

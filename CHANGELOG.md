@@ -1,3 +1,6 @@
+## 1.0.8
+* Allow for drag disable on specific items, thanks to [damian-molinski](https://github.com/casvanluijtelaar/reorderable_grid/pull/25)
+
 ## 1.0.7
 * support latest SDK versions
 * fix scrollcontroller, thanks to [Hilbert2048](https://github.com/casvanluijtelaar/reorderable_grid/pull/27)

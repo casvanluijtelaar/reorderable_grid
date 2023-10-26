@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderable_grid/src/reorderable_grid.dart';
 import 'package:reorderable_grid/src/typedefs.dart';
 
-
 /// A scrollable, reorderable, 2D array of widgets.
 ///
 /// The main axis direction of a grid is the direction in which it scrolls (the
@@ -258,6 +257,7 @@ class ReorderableGridView extends StatefulWidget {
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
+    this.onReorderStart,
   })  : assert(
           children.every((Widget w) => w.key != null),
           'All children of this widget must have a key.',
@@ -308,6 +308,7 @@ class ReorderableGridView extends StatefulWidget {
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
+    this.onReorderStart,
   })  : assert(itemCount >= 0),
         super(key: key);
 
@@ -350,6 +351,7 @@ class ReorderableGridView extends StatefulWidget {
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
+    this.onReorderStart,
   })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: mainAxisSpacing,
@@ -403,6 +405,7 @@ class ReorderableGridView extends StatefulWidget {
     this.anchor = 0.0,
     this.proxyDecorator,
     this.autoScroll,
+    this.onReorderStart,
   })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: maxCrossAxisExtent,
           mainAxisSpacing: mainAxisSpacing,
@@ -480,6 +483,9 @@ class ReorderableGridView extends StatefulWidget {
   /// {@macro flutter.widgets.reorderable_list.onReorder}
   final ReorderCallback onReorder;
 
+  /// {@macro flutter.widgets.reorderable_list.onReorderStart}
+  final void Function(int index)? onReorderStart;
+
   /// {@macro flutter.widgets.reorderable_list.proxyDecorator}
   final ReorderItemProxyDecorator? proxyDecorator;
 
@@ -491,7 +497,6 @@ class ReorderableGridView extends StatefulWidget {
   ReorderableGridViewState createState() => ReorderableGridViewState();
 
   static bool _defaultItemDragEnable(int index) => true;
-
 }
 
 class ReorderableGridViewState extends State<ReorderableGridView> {
@@ -640,6 +645,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
             gridDelegate: widget.gridDelegate,
             itemCount: widget.itemCount,
             onReorder: widget.onReorder,
+            onReorderStart: widget.onReorderStart,
             proxyDecorator: widget.proxyDecorator ?? _proxyDecorator,
             autoScroll: widget.autoScroll ??
                 widget.physics is! NeverScrollableScrollPhysics,

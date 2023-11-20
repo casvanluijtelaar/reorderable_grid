@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
         body: ReorderableGridView.extent(
           maxCrossAxisExtent: 150,
           onReorder: _onReorder,
+          onReorderStart: (index) => print(index),
           childAspectRatio: 1,
           children: items.map((item) {
             /// map every list entry to a widget and assure every child has a

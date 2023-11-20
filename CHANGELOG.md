@@ -1,3 +1,6 @@
+## 1.0.9
+* Add onReorderStart callback with index, thanks to [naamapps](https://github.com/casvanluijtelaar/reorderable_grid/pull/31)
+
 ## 1.0.8
 * Allow for drag disable on specific items, thanks to [damian-molinski](https://github.com/casvanluijtelaar/reorderable_grid/pull/25)
 

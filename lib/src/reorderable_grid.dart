@@ -515,6 +515,10 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   Drag? _dragStart(Offset position) {
     assert(_dragInfo == null);
 
+    // if any items are already being dragged, ignore this dragstart
+    if(_items.values.any((e) => e.dragging)) return null;
+
+
     final _ReorderableItemState item = _items[_dragIndex!]!;
     item.dragging = true;
     item.rebuild();

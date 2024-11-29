@@ -497,7 +497,12 @@ class ReorderableGridView extends StatefulWidget {
   /// [NeverScrollableScrollPhysics]
   final bool? autoScroll;
 
-  /// {@macro flutter.widgets.reorderable_list.buildDefaultDragHandles}
+  /// If true, the default drag handles will be built. Defaults to true.
+  /// If false, you must provide your own drag handles.
+  ///
+  /// The default drag handles are built based on the platform:
+  /// - Windows, Linux, macOS: Drag handle is [ReorderableGridDragStartListener]
+  /// - Android, iOS, Fuchsia: Drag handle is [ReorderableGridDelayedDragStartListener]
   final bool buildDefaultDragHandles;
 
   @override

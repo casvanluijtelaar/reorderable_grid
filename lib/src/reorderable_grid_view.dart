@@ -258,6 +258,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
   })  : assert(
           children.every((Widget w) => w.key != null),
           'All children of this widget must have a key.',
@@ -309,6 +310,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
   })  : assert(itemCount >= 0),
         super(key: key);
 
@@ -352,6 +354,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
   })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: mainAxisSpacing,
@@ -406,6 +409,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
   })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: maxCrossAxisExtent,
           mainAxisSpacing: mainAxisSpacing,
@@ -493,6 +497,9 @@ class ReorderableGridView extends StatefulWidget {
   /// [NeverScrollableScrollPhysics]
   final bool? autoScroll;
 
+  /// {@macro flutter.widgets.reorderable_list.buildDefaultDragHandles}
+  final bool buildDefaultDragHandles;
+
   @override
   ReorderableGridViewState createState() => ReorderableGridViewState();
 
@@ -519,8 +526,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
     // before index+2, which is after the space at index+1.
     void moveAfter() => reorder(index, index + 2);
 
-    final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    final WidgetsLocalizations localizations = WidgetsLocalizations.of(context);
 
     // If the item can move to before its current position in the grid.
     if (index > 0) {
@@ -582,26 +588,32 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
         _ReorderableGridViewChildGlobalKey(item.key!, this);
     final bool enable = widget.itemDragEnable(index);
 
-    switch (Theme.of(context).platform) {
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-      case TargetPlatform.macOS:
-        return ReorderableGridDragStartListener(
-          key: itemGlobalKey,
-          index: index,
-          enabled: enable,
-          child: itemWithSemantics,
-        );
-      case TargetPlatform.iOS:
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-        return ReorderableGridDelayedDragStartListener(
-          key: itemGlobalKey,
-          index: index,
-          enabled: enable,
-          child: itemWithSemantics,
-        );
+    if (widget.buildDefaultDragHandles) {
+      switch (Theme.of(context).platform) {
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
+        case TargetPlatform.macOS:
+          return ReorderableGridDragStartListener(
+            key: itemGlobalKey,
+            index: index,
+            enabled: enable,
+            child: itemWithSemantics,
+          );
+        case TargetPlatform.iOS:
+        case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+          return ReorderableGridDelayedDragStartListener(
+            key: itemGlobalKey,
+            index: index,
+            enabled: enable,
+            child: itemWithSemantics,
+          );
+      }
     }
+    return KeyedSubtree(
+      key: itemGlobalKey,
+      child: itemWithSemantics,
+    );
   }
 
   Widget _proxyDecorator(Widget child, int index, Animation<double> animation) {

@@ -123,7 +123,7 @@ void main() {
         MaterialApp(
           home: reorderableGridView,
         ),
-        const Duration(milliseconds: 100));
+        duration: const Duration(milliseconds: 100));
 
     final dynamic exception = tester.takeException();
     expect(exception, isNotNull);

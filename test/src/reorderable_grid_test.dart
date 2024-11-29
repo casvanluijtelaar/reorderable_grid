@@ -347,7 +347,7 @@ void main() {
           onReorder: handleReorder,
         ),
       ),
-      const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 100),
     );
     await tester.pumpAndSettle();
 

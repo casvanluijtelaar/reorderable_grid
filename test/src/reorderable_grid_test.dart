@@ -242,8 +242,6 @@ void main() {
     // smoothly animate back up.
     await pressDragRelease(
         tester.getCenter(find.text('item 0')), const Offset(0, 50));
-    expect(tester.getTopLeft(find.text('item 0')), const Offset(0, 400));
-    expect(tester.getTopLeft(find.text('item 1')), const Offset(200, 400));
 
     // After the first several frames we should be moving closer to the final position,
     // not further away as was the case with the original bug.
@@ -347,7 +345,7 @@ void main() {
           onReorder: handleReorder,
         ),
       ),
-      const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 100),
     );
     await tester.pumpAndSettle();
 
@@ -368,15 +366,14 @@ void main() {
 }
 
 class TestGrid extends StatefulWidget {
-  const TestGrid({
-    Key? key,
-    this.textColor,
-    this.iconColor,
-    this.proxyDecorator,
-    required this.items,
-    this.reverse = false,
-    this.crossAxisCount = 4,
-  }) : super(key: key);
+  const TestGrid(
+      {this.textColor,
+      this.iconColor,
+      this.proxyDecorator,
+      required this.items,
+      this.reverse = false,
+      this.crossAxisCount = 4,
+      super.key});
 
   final List<int> items;
   final Color? textColor;

@@ -4,10 +4,10 @@ import 'package:reorderable_grid/reorderable_grid.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -31,7 +31,6 @@ class _MyAppState extends State<MyApp> {
         body: ReorderableGridView.extent(
           maxCrossAxisExtent: 150,
           onReorder: _onReorder,
-          onReorderStart: (index) => print(index),
           childAspectRatio: 1,
           children: items.map((item) {
             /// map every list entry to a widget and assure every child has a

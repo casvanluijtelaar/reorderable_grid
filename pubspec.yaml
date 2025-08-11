@@ -2,7 +2,7 @@ name: reorderable_grid
 description: A full reorderable grid implementations similar to flutter's native reorderable list.
 homepage: https://github.com/casvanluijtelaar/reorderable_grid
 repository: https://github.com/casvanluijtelaar/reorderable_grid
-version: 1.0.9
+version: 1.0.10
 
 environment:
   sdk: ">=2.17.0 <4.0.0"

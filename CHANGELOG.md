@@ -1,4 +1,4 @@
-## 1.0.10
+## 1.0.11
 * bump to latest flutter/package versions
 
 ## 1.0.9

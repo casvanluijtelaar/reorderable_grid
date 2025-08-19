@@ -257,6 +257,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.onReorderEnd,
     super.key,
   })  : assert(
           children.every((Widget w) => w.key != null),
@@ -307,6 +308,7 @@ class ReorderableGridView extends StatefulWidget {
       this.proxyDecorator,
       this.autoScroll,
       this.onReorderStart,
+      this.onReorderEnd,
       super.key})
       : assert(itemCount >= 0);
 
@@ -349,6 +351,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.onReorderEnd,
     super.key,
   })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
@@ -402,6 +405,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.onReorderEnd,
     super.key,
   })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: maxCrossAxisExtent,
@@ -481,6 +485,9 @@ class ReorderableGridView extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.onReorderStart}
   final void Function(int index)? onReorderStart;
+
+  /// {@macro flutter.widgets.reorderable_list.onReorderEnd}
+  final VoidCallback? onReorderEnd;
 
   /// {@macro flutter.widgets.reorderable_list.proxyDecorator}
   final ReorderItemProxyDecorator? proxyDecorator;
@@ -641,6 +648,7 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
             itemCount: widget.itemCount,
             onReorder: widget.onReorder,
             onReorderStart: widget.onReorderStart,
+            onReorderEnd: widget.onReorderEnd,
             proxyDecorator: widget.proxyDecorator ?? _proxyDecorator,
             autoScroll: widget.autoScroll ??
                 widget.physics is! NeverScrollableScrollPhysics,

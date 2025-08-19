@@ -53,6 +53,7 @@ class ReorderableGrid extends StatefulWidget {
       this.clipBehavior = Clip.hardEdge,
       this.autoScroll,
       this.onReorderStart,
+      this.onReorderEnd,
       super.key})
       : assert(itemCount >= 0);
 
@@ -76,6 +77,9 @@ class ReorderableGrid extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.onReorderStart}
   final void Function(int index)? onReorderStart;
+
+  /// {@macro flutter.widgets.reorderable_list.onReorderEnd}
+  final VoidCallback? onReorderEnd;
 
   /// {@macro flutter.widgets.reorderable_list.proxyDecorator}
   final ReorderItemProxyDecorator? proxyDecorator;
@@ -309,6 +313,7 @@ class SliverReorderableGrid extends StatefulWidget {
       required this.onReorder,
       required this.gridDelegate,
       this.onReorderStart,
+      this.onReorderEnd,
       this.reverse = false,
       this.proxyDecorator,
       this.autoScroll = true,
@@ -327,6 +332,9 @@ class SliverReorderableGrid extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.onReorderStart}
   final void Function(int index)? onReorderStart;
+
+  /// {@macro flutter.widgets.reorderable_list.onReorderEnd}
+  final VoidCallback? onReorderEnd;
 
   /// {@macro flutter.widgets.reorderable_list.proxyDecorator}
   final ReorderItemProxyDecorator? proxyDecorator;
@@ -556,10 +564,12 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   }
 
   void _dragCancel(_DragInfo item) {
+    widget.onReorderEnd?.call();
     _dragReset();
   }
 
   void _dragEnd(_DragInfo item) {
+    widget.onReorderEnd?.call();
     setState(() => _finalDropPosition = _itemOffsetAt(_insertIndex!));
   }
 

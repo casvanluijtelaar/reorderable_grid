@@ -285,31 +285,32 @@ class ReorderableGridView extends StatefulWidget {
   /// `addRepaintBoundaries` argument corresponds to the
   /// [SliverChildBuilderDelegate.addRepaintBoundaries] property. Both must not
   /// be null.
-  const ReorderableGridView.builder(
-      {this.scrollDirection = Axis.vertical,
-      this.reverse = false,
-      this.controller,
-      this.primary,
-      this.physics,
-      this.shrinkWrap = false,
-      this.padding,
-      required this.gridDelegate,
-      required this.itemBuilder,
-      required this.itemCount,
-      required this.onReorder,
-      this.itemDragEnable = _defaultItemDragEnable,
-      this.cacheExtent,
-      this.semanticChildCount,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-      this.restorationId,
-      this.clipBehavior = Clip.hardEdge,
-      this.anchor = 0.0,
-      this.proxyDecorator,
-      this.autoScroll,
-      this.onReorderStart,
-      super.key
-      }) : assert(itemCount >= 0);
+  const ReorderableGridView.builder({
+    this.scrollDirection = Axis.vertical,
+    this.reverse = false,
+    this.controller,
+    this.primary,
+    this.physics,
+    this.shrinkWrap = false,
+    this.padding,
+    required this.gridDelegate,
+    required this.itemBuilder,
+    required this.itemCount,
+    required this.onReorder,
+    this.itemDragEnable = _defaultItemDragEnable,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.restorationId,
+    this.clipBehavior = Clip.hardEdge,
+    this.anchor = 0.0,
+    this.proxyDecorator,
+    this.autoScroll,
+    this.onReorderStart,
+    this.buildDefaultDragHandles = true,
+    super.key,
+  }) : assert(itemCount >= 0);
 
   /// Creates a scrollable, 2D array of widgets with a fixed number of tiles in
   /// the cross axis.
@@ -498,6 +499,21 @@ class ReorderableGridView extends StatefulWidget {
   /// The default drag handles are built based on the platform:
   /// - Windows, Linux, macOS: Drag handle is [ReorderableGridDragStartListener]
   /// - Android, iOS, Fuchsia: Drag handle is [ReorderableGridDelayedDragStartListener]
+  ///
+  /// example usage:
+  /// ```
+  ///ReorderableGridView.extent(
+  ///  buildDefaultDragHandles: false,
+  ///  children: items.map((item) {
+  ///    return ReorderableGridDragStartListener( // or a custom one
+  ///       key: ValueKey(item),
+  ///       enabled: true,
+  ///       index: item,
+  ///       child: Text(item.toString()),
+  ///    );
+  ///  }).toList(),
+  ///),
+  /// ```
   final bool buildDefaultDragHandles;
 
   @override

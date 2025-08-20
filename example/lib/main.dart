@@ -31,19 +31,14 @@ class _MyAppState extends State<MyApp> {
         body: ReorderableGridView.extent(
           maxCrossAxisExtent: 150,
           onReorder: _onReorder,
-          buildDefaultDragHandles: false,
           childAspectRatio: 1,
           children: items.map((item) {
             /// map every list entry to a widget and assure every child has a
             /// unique key
-            return ReorderableGridDragStartListener(
+            return Card(
               key: ValueKey(item),
-              enabled: true,
-              index: item,
-              child: Card(
-                child: Center(
-                  child: Text(item.toString()),
-                ),
+              child: Center(
+                child: Text(item.toString()),
               ),
             );
           }).toList(),

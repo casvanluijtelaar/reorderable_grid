@@ -1,3 +1,6 @@
+## 1.0.12
+* Add ability to override the default grag handlers, thanks to [CodeDoctorDE](https://github.com/casvanluijtelaar/reorderable_grid/pull/44)
+
 ## 1.0.11
 * bump to latest flutter/package versions
 

@@ -15,7 +15,7 @@ void main() {
                   crossAxisCount: 4,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return const SizedBox();
+                  return SizedBox(key: ValueKey<int>(index));
                 },
                 itemCount: -1,
                 onReorder: (int from, int to) {},
@@ -168,10 +168,6 @@ void main() {
 }
 
 class _Stateful extends StatefulWidget {
-  // Ignoring the preference for const constructors because we want to test with regular non-const instances.
-  // ignore:prefer_const_constructors_in_immutables
-  _Stateful({Key? key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _StatefulState();
 }

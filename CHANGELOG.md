@@ -1,3 +1,6 @@
+## 1.0.11
+* bump to latest flutter/package versions
+
 ## 1.0.9
 * Add onReorderStart callback with index, thanks to [naamapps](https://github.com/casvanluijtelaar/reorderable_grid/pull/31)
 

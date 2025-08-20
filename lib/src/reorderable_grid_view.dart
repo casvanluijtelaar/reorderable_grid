@@ -236,7 +236,6 @@ class ReorderableGridView extends StatefulWidget {
   /// [SliverChildListDelegate.addRepaintBoundaries] property. Both must not be
   /// null.
   ReorderableGridView({
-    Key? key,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
@@ -259,13 +258,13 @@ class ReorderableGridView extends StatefulWidget {
     this.autoScroll,
     this.onReorderStart,
     this.buildDefaultDragHandles = true,
+    super.key,
   })  : assert(
           children.every((Widget w) => w.key != null),
           'All children of this widget must have a key.',
         ),
         itemBuilder = ((BuildContext context, int index) => children[index]),
-        itemCount = children.length,
-        super(key: key);
+        itemCount = children.length;
 
   /// Creates a scrollable, 2D array of widgets that are created on demand.
   ///
@@ -286,33 +285,31 @@ class ReorderableGridView extends StatefulWidget {
   /// `addRepaintBoundaries` argument corresponds to the
   /// [SliverChildBuilderDelegate.addRepaintBoundaries] property. Both must not
   /// be null.
-  const ReorderableGridView.builder({
-    Key? key,
-    this.scrollDirection = Axis.vertical,
-    this.reverse = false,
-    this.controller,
-    this.primary,
-    this.physics,
-    this.shrinkWrap = false,
-    this.padding,
-    required this.gridDelegate,
-    required this.itemBuilder,
-    required this.itemCount,
-    required this.onReorder,
-    this.itemDragEnable = _defaultItemDragEnable,
-    this.cacheExtent,
-    this.semanticChildCount,
-    this.dragStartBehavior = DragStartBehavior.start,
-    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.restorationId,
-    this.clipBehavior = Clip.hardEdge,
-    this.anchor = 0.0,
-    this.proxyDecorator,
-    this.autoScroll,
-    this.onReorderStart,
-    this.buildDefaultDragHandles = true,
-  })  : assert(itemCount >= 0),
-        super(key: key);
+  const ReorderableGridView.builder(
+      {this.scrollDirection = Axis.vertical,
+      this.reverse = false,
+      this.controller,
+      this.primary,
+      this.physics,
+      this.shrinkWrap = false,
+      this.padding,
+      required this.gridDelegate,
+      required this.itemBuilder,
+      required this.itemCount,
+      required this.onReorder,
+      this.itemDragEnable = _defaultItemDragEnable,
+      this.cacheExtent,
+      this.semanticChildCount,
+      this.dragStartBehavior = DragStartBehavior.start,
+      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+      this.restorationId,
+      this.clipBehavior = Clip.hardEdge,
+      this.anchor = 0.0,
+      this.proxyDecorator,
+      this.autoScroll,
+      this.onReorderStart,
+      super.key
+      }) : assert(itemCount >= 0);
 
   /// Creates a scrollable, 2D array of widgets with a fixed number of tiles in
   /// the cross axis.
@@ -329,7 +326,6 @@ class ReorderableGridView extends StatefulWidget {
   ///
   ///  * [SliverGrid.count], the equivalent constructor for [SliverGrid].
   ReorderableGridView.count({
-    Key? key,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
@@ -355,6 +351,7 @@ class ReorderableGridView extends StatefulWidget {
     this.autoScroll,
     this.onReorderStart,
     this.buildDefaultDragHandles = true,
+    super.key,
   })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
           mainAxisSpacing: mainAxisSpacing,
@@ -366,8 +363,7 @@ class ReorderableGridView extends StatefulWidget {
           'All children of this widget must have a key.',
         ),
         itemBuilder = ((BuildContext context, int index) => children[index]),
-        itemCount = children.length,
-        super(key: key);
+        itemCount = children.length;
 
   /// Creates a scrollable, 2D array of widgets with tiles that each have a
   /// maximum cross-axis extent.
@@ -384,7 +380,6 @@ class ReorderableGridView extends StatefulWidget {
   ///
   ///  * [SliverGrid.extent], the equivalent constructor for [SliverGrid].
   ReorderableGridView.extent({
-    Key? key,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.controller,
@@ -410,6 +405,7 @@ class ReorderableGridView extends StatefulWidget {
     this.autoScroll,
     this.onReorderStart,
     this.buildDefaultDragHandles = true,
+    super.key,
   })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: maxCrossAxisExtent,
           mainAxisSpacing: mainAxisSpacing,
@@ -421,8 +417,7 @@ class ReorderableGridView extends StatefulWidget {
           'All children of this widget must have a key.',
         ),
         itemBuilder = ((BuildContext context, int index) => children[index]),
-        itemCount = children.length,
-        super(key: key);
+        itemCount = children.length;
 
   /// A delegate that controls the layout of the children within the [ReorderableGridView].
   ///

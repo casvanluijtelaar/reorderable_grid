@@ -257,6 +257,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
     super.key,
   })  : assert(
           children.every((Widget w) => w.key != null),
@@ -284,31 +285,32 @@ class ReorderableGridView extends StatefulWidget {
   /// `addRepaintBoundaries` argument corresponds to the
   /// [SliverChildBuilderDelegate.addRepaintBoundaries] property. Both must not
   /// be null.
-  const ReorderableGridView.builder(
-      {this.scrollDirection = Axis.vertical,
-      this.reverse = false,
-      this.controller,
-      this.primary,
-      this.physics,
-      this.shrinkWrap = false,
-      this.padding,
-      required this.gridDelegate,
-      required this.itemBuilder,
-      required this.itemCount,
-      required this.onReorder,
-      this.itemDragEnable = _defaultItemDragEnable,
-      this.cacheExtent,
-      this.semanticChildCount,
-      this.dragStartBehavior = DragStartBehavior.start,
-      this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-      this.restorationId,
-      this.clipBehavior = Clip.hardEdge,
-      this.anchor = 0.0,
-      this.proxyDecorator,
-      this.autoScroll,
-      this.onReorderStart,
-      super.key})
-      : assert(itemCount >= 0);
+  const ReorderableGridView.builder({
+    this.scrollDirection = Axis.vertical,
+    this.reverse = false,
+    this.controller,
+    this.primary,
+    this.physics,
+    this.shrinkWrap = false,
+    this.padding,
+    required this.gridDelegate,
+    required this.itemBuilder,
+    required this.itemCount,
+    required this.onReorder,
+    this.itemDragEnable = _defaultItemDragEnable,
+    this.cacheExtent,
+    this.semanticChildCount,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.restorationId,
+    this.clipBehavior = Clip.hardEdge,
+    this.anchor = 0.0,
+    this.proxyDecorator,
+    this.autoScroll,
+    this.onReorderStart,
+    this.buildDefaultDragHandles = true,
+    super.key,
+  }) : assert(itemCount >= 0);
 
   /// Creates a scrollable, 2D array of widgets with a fixed number of tiles in
   /// the cross axis.
@@ -349,6 +351,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
     super.key,
   })  : gridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
@@ -402,6 +405,7 @@ class ReorderableGridView extends StatefulWidget {
     this.proxyDecorator,
     this.autoScroll,
     this.onReorderStart,
+    this.buildDefaultDragHandles = true,
     super.key,
   })  : gridDelegate = SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: maxCrossAxisExtent,
@@ -488,6 +492,29 @@ class ReorderableGridView extends StatefulWidget {
   /// Overrides if autoscrolling is enabled. Defaults to false if `physics` is
   /// [NeverScrollableScrollPhysics]
   final bool? autoScroll;
+
+  /// If true, the default drag handles will be built. Defaults to true.
+  /// If false, you must provide your own drag handles.
+  ///
+  /// The default drag handles are built based on the platform:
+  /// - Windows, Linux, macOS: Drag handle is [ReorderableGridDragStartListener]
+  /// - Android, iOS, Fuchsia: Drag handle is [ReorderableGridDelayedDragStartListener]
+  ///
+  /// example usage:
+  /// ```
+  ///ReorderableGridView.extent(
+  ///  buildDefaultDragHandles: false,
+  ///  children: items.map((item) {
+  ///    return ReorderableGridDragStartListener( // or a custom one
+  ///       key: ValueKey(item),
+  ///       enabled: true,
+  ///       index: item,
+  ///       child: Text(item.toString()),
+  ///    );
+  ///  }).toList(),
+  ///),
+  /// ```
+  final bool buildDefaultDragHandles;
 
   @override
   ReorderableGridViewState createState() => ReorderableGridViewState();
@@ -577,26 +604,32 @@ class ReorderableGridViewState extends State<ReorderableGridView> {
         _ReorderableGridViewChildGlobalKey(item.key!, this);
     final bool enable = widget.itemDragEnable(index);
 
-    switch (Theme.of(context).platform) {
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-      case TargetPlatform.macOS:
-        return ReorderableGridDragStartListener(
-          key: itemGlobalKey,
-          index: index,
-          enabled: enable,
-          child: itemWithSemantics,
-        );
-      case TargetPlatform.iOS:
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-        return ReorderableGridDelayedDragStartListener(
-          key: itemGlobalKey,
-          index: index,
-          enabled: enable,
-          child: itemWithSemantics,
-        );
+    if (widget.buildDefaultDragHandles) {
+      switch (Theme.of(context).platform) {
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
+        case TargetPlatform.macOS:
+          return ReorderableGridDragStartListener(
+            key: itemGlobalKey,
+            index: index,
+            enabled: enable,
+            child: itemWithSemantics,
+          );
+        case TargetPlatform.iOS:
+        case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+          return ReorderableGridDelayedDragStartListener(
+            key: itemGlobalKey,
+            index: index,
+            enabled: enable,
+            child: itemWithSemantics,
+          );
+      }
     }
+    return KeyedSubtree(
+      key: itemGlobalKey,
+      child: itemWithSemantics,
+    );
   }
 
   Widget _proxyDecorator(Widget child, int index, Animation<double> animation) {

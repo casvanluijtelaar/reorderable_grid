@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:reorderable_grid/src/typedefs.dart';
 
 /// {@template reorderable_grid_view.reorderable_grid}
 /// A scrolling container that allows the user to interactively reorder the
@@ -313,6 +314,7 @@ class SliverReorderableGrid extends StatefulWidget {
       this.proxyDecorator,
       this.autoScroll = true,
       this.scrollDirection = Axis.vertical,
+      this.itemDragEnable = _defaultItemDragEnable,
       super.key})
       : assert(itemCount >= 0);
 
@@ -342,6 +344,11 @@ class SliverReorderableGrid extends StatefulWidget {
 
   /// {@macro flutter.widgets.scroll_view.scrollDirection}
   final Axis scrollDirection;
+
+  /// Allows you to manually overwrite which items can be dragged or not
+  final IndexedValueGetter<bool> itemDragEnable;
+
+  static bool _defaultItemDragEnable(int index) => true;
 
   @override
   SliverReorderableGridState createState() => SliverReorderableGridState();
@@ -599,6 +606,34 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     }
   }
 
+  int _findNearestDraggableIndex(int targetIndex) {
+    int nextIndex = targetIndex;
+    while (nextIndex < widget.itemCount &&
+        !widget.itemDragEnable(nextIndex) &&
+        nextIndex != _dragIndex) {
+      nextIndex++;
+    }
+
+    int prevIndex = targetIndex;
+    while (prevIndex >= 0 &&
+        !widget.itemDragEnable(prevIndex) &&
+        prevIndex != _dragIndex) {
+      prevIndex--;
+    }
+
+    final bool nextValid =
+        nextIndex < widget.itemCount && nextIndex != _dragIndex;
+    final bool prevValid = prevIndex >= 0 && prevIndex != _dragIndex;
+
+    if (!nextValid && !prevValid) return _insertIndex!;
+    if (!nextValid) return prevIndex;
+    if (!prevValid) return nextIndex;
+
+    return (nextIndex - targetIndex) <= (targetIndex - prevIndex)
+        ? nextIndex
+        : prevIndex;
+  }
+
   void _dragUpdateItems() {
     assert(_dragInfo != null);
 
@@ -610,12 +645,18 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
     for (final _ReorderableItemState item in _items.values) {
       if (!item.mounted) continue;
 
+      if (!widget.itemDragEnable(item.index)) continue;
+
       final Rect geometry = item.targetGeometryNonOffset();
 
       if (geometry.contains(dragCenter)) {
         newIndex = item.index;
         break;
       }
+    }
+
+    if (!widget.itemDragEnable(newIndex)) {
+      newIndex = _findNearestDraggableIndex(newIndex);
     }
 
     if (newIndex == _insertIndex) return;
@@ -715,13 +756,27 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   }
 
   Offset _calculateNextDragOffset(int index) {
+    if (!widget.itemDragEnable(index)) return Offset.zero;
+
     int minPos = min(_dragIndex!, _insertIndex!);
     int maxPos = max(_dragIndex!, _insertIndex!);
 
     if (index < minPos || index > maxPos) return Offset.zero;
 
     final int direction = _insertIndex! > _dragIndex! ? -1 : 1;
-    return _itemOffsetAt(index + direction) - _itemOffsetAt(index);
+    int nextIndex = index + direction;
+
+    while (nextIndex >= 0 &&
+        nextIndex < widget.itemCount &&
+        !widget.itemDragEnable(nextIndex)) {
+      nextIndex += direction;
+    }
+
+    if (nextIndex < 0 || nextIndex >= widget.itemCount) {
+      return Offset.zero;
+    }
+
+    return _itemOffsetAt(nextIndex) - _itemOffsetAt(index);
   }
 
   Offset _itemOffsetAt(int index) {

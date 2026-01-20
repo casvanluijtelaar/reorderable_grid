@@ -80,3 +80,10 @@ build/
 **/web
 **/ios
 **/android
+
+# Ignore example project platform folders
+example/windows/
+example/linux/
+example/macos/
+example/ios/
+example/android/

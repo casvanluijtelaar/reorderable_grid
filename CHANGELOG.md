@@ -1,3 +1,6 @@
+## 1.0.13
+* Add ability lock specified items from dragging or moving, thanks to [TtTRz](https://github.com/casvanluijtelaar/reorderable_grid/pull/47)
+
 ## 1.0.12
 * Add ability to override the default grag handlers, thanks to [CodeDoctorDE](https://github.com/casvanluijtelaar/reorderable_grid/pull/44)
 

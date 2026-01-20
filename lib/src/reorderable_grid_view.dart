@@ -519,6 +519,7 @@ class ReorderableGridView extends StatefulWidget {
   @override
   ReorderableGridViewState createState() => ReorderableGridViewState();
 
+  /// allows all items to be draggable by default
   static bool _defaultItemDragEnable(int index) => true;
 }
 

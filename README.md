@@ -60,6 +60,9 @@ return MaterialApp(
   * `ReorderableGrid`, A barebones widget that allows you to customize the grid however you want
   * `SliverReorderableGrid`, a reorderable grid sliver for custom scroll implementations
 
+## Documentation
+You can find all features and fuctionality documented [here](https://pub.dev/documentation/reorderable_grid/latest/reorderable_grid/)
+
 
 ## :wave: Get Involved
 

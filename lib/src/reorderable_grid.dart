@@ -37,6 +37,7 @@ class ReorderableGrid extends StatefulWidget {
       {required this.itemBuilder,
       required this.itemCount,
       required this.onReorder,
+      this.onDrop,
       required this.gridDelegate,
       this.proxyDecorator,
       this.padding,
@@ -74,6 +75,9 @@ class ReorderableGrid extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.onReorder}
   final ReorderCallback onReorder;
+
+  /// Called when the dragged element is dropped
+  final ReorderCallback? onDrop;
 
   /// {@macro flutter.widgets.reorderable_list.onReorderStart}
   final void Function(int index)? onReorderStart;
@@ -266,6 +270,7 @@ class ReorderableGridState extends State<ReorderableGrid> {
             itemBuilder: widget.itemBuilder,
             itemCount: widget.itemCount,
             onReorder: widget.onReorder,
+            onDrop: widget.onDrop,
             onReorderStart: widget.onReorderStart,
             proxyDecorator: widget.proxyDecorator,
             reverse: widget.reverse,
@@ -308,6 +313,7 @@ class SliverReorderableGrid extends StatefulWidget {
       {required this.itemBuilder,
       required this.itemCount,
       required this.onReorder,
+      this.onDrop,
       required this.gridDelegate,
       this.onReorderStart,
       this.reverse = false,
@@ -326,6 +332,9 @@ class SliverReorderableGrid extends StatefulWidget {
 
   /// {@macro flutter.widgets.reorderable_list.onReorder}
   final ReorderCallback onReorder;
+
+  /// Called when the dragged element is dropped
+  final ReorderCallback? onDrop;
 
   /// {@macro flutter.widgets.reorderable_list.onReorderStart}
   final void Function(int index)? onReorderStart;
@@ -573,6 +582,7 @@ class SliverReorderableGridState extends State<SliverReorderableGrid>
   void _dropCompleted() {
     final int fromIndex = _dragIndex!;
     final int toIndex = _insertIndex!;
+    widget.onDrop?.call(fromIndex, toIndex);
     if (fromIndex != toIndex) {
       widget.onReorder.call(fromIndex, toIndex);
     }
@@ -843,9 +853,11 @@ class _ReorderableItemState extends State<_ReorderableItem> {
   AnimationController? _offsetAnimation;
 
   Key get key => widget.key!;
+
   int get index => widget.index;
 
   bool get dragging => _dragging;
+
   set dragging(bool dragging) {
     if (mounted) {
       setState(() {

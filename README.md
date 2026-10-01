@@ -1,69 +1,83 @@
- # :white_square_button: Reorderable Grid
+# Reorderable Grid — `onDrop` Extension
 
-[![Pub Version](https://img.shields.io/pub/v/reorderable_grid?label=version&style=flat-square)](https://pub.dev/packages/reorderable_grid/changelog)
-[![Likes](https://badges.bar/reorderable_grid/likes)](https://pub.dev/packages/reorderable_grid/score)
-[![Pub points](https://badges.bar/reorderable_grid/pub%20points)](https://pub.dev/packages/reorderable_grid/score) 
-[![Pub](https://img.shields.io/github/stars/casvanluijtelaar/reorderable_grid)](https://github.com/casvanluijtelaar/reorderable_grid)
-[![codecov](https://codecov.io/gh/casvanluijtelaar/reorderable_grid/branch/master/graph/badge.svg?token=V047CJZ1RU)](https://codecov.io/gh/casvanluijtelaar/reorderable_grid)
+A small extension of the [`reorderable_grid`](https://github.com/casvanluijtelaar/reorderable_grid) Flutter package that exposes the end of a drag-and-drop operation independently from whether the item was actually reordered.
 
+## Why this extension was needed
 
-A full reorderable grid implemention similar to Flutters Reorderable_List. with full `ReorderableGridView`, `ReorderableGrid` and `SliverReorderableGrid` implementations
+The package already provides an `onReorder` callback, but it is only triggered when the dragged item changes position.
 
+In my project, [CoStock](https://github.com/DolBich/CoStock), I implemented automatic scrolling while dragging an item near the edge of the grid. The scroll starts when a drag begins and must always stop when the drag ends.
 
+With the original API, this created an edge case:
 
-<p align="center">
-  <img src="https://github.com/casvanluijtelaar/reorderable_grid/blob/master/assets/example.gif?raw=true" alt="gif showing basic usage" width="600"/>
-<p\>
+```text
+Drag starts
+    ↓
+Auto-scroll enabled
+    ↓
+Item is dropped at a different position
+    → onReorder() fires → auto-scroll stops
 
-## :hammer: How it works 
-`ReorderableGridView` is a drop in replacement for the existing `GridView` and adds an `onReorder` callback that provides the original and new index of the reordered item.
-
-``` dart
-/// create a new list of data
-final items = List<int>.generate(40, (index) => index);
-
-/// when the reorder completes remove the list entry from its old position
-/// and insert it at its new index
-void _onReorder(int oldIndex, int newIndex) {
-setState(() {
-    final item = items.removeAt(oldIndex);
-    items.insert(newIndex, item);
-});
-}
-
-@override
-Widget build(BuildContext context) {
-return MaterialApp(
-    home: Scaffold(
-      body: ReorderableGridView.extent(
-        maxCrossAxisExtent: 250,
-        onReorder: _onReorder,
-        childAspectRatio: 1,
-        children: items.map((item) {
-          /// map every list entry to a widget and assure every child has a 
-          /// unique key
-          return Card(
-            key: ValueKey(item),
-            child: Center(
-            child: Text(item.toString()),
-            ),
-          );
-        }).toList(),
-      ),
-    ),
-);
-}
+Item is dropped at its original position
+    → onReorder() does not fire
+    → auto-scroll keeps running
 ```
 
-`ReorderableGrid` provides all the constructors and parameters the normal `GridView` has. The package also includes:
-  * `ReorderableGridView`, which is a prebuild Material-ish implementation of the grid. 
-  * `ReorderableGrid`, A barebones widget that allows you to customize the grid however you want
-  * `SliverReorderableGrid`, a reorderable grid sliver for custom scroll implementations
+To handle both cases, I added an `onDrop` callback that is invoked whenever the drag operation finishes, regardless of whether the item's position changed.
 
-## Documentation
-You can find all features and fuctionality documented [here](https://pub.dev/documentation/reorderable_grid/latest/reorderable_grid/)
+## The change
 
+The package now supports:
 
-## :wave: Get Involved
+```dart
+ReorderableGrid(
+  reorderStart: () => startAutoScroll(),
+  onDrop: (oldIndex, newIndex) => stopAutoScroll(),
+  onReorder: (oldIndex, newIndex) {
+    // Update item order when the position actually changes.
+  },
+)
+```
 
-If this package is useful to you please :thumbsup: on [pub.dev](https://pub.dev/packages/reorderable_grid) and :star: on [github](https://github.com/casvanluijtelaar/reorderable_grid). If you have any Issues, recommendations or pull requests I'd love to see them!
+The resulting lifecycle is:
+
+```text
+Drag starts
+    ↓
+reorderStart
+    ↓
+Drag / auto-scroll
+    ↓
+Drop
+    ├── onDrop(oldIndex, newIndex)    ← always called
+    └── onReorder(oldIndex, newIndex) ← only when position changes
+```
+
+This keeps two different concerns separate:
+
+- `onDrop` — the drag operation has ended;
+- `onReorder` — the item's order has changed.
+
+## Upstream contribution
+
+The change was implemented as a focused modification to the original package and submitted upstream as a pull request:
+
+**[Pull Request #48](https://github.com/casvanluijtelaar/reorderable_grid/pull/48)**
+
+At the time of writing, the pull request is still awaiting maintainer response.
+
+## Relation to CoStock
+
+The extension was created specifically to support CoStock's drag-and-drop inventory/group organization and its automatic scrolling behavior during drag operations.
+
+The implementation is intentionally small: rather than changing the package's existing reorder semantics, it adds a separate lifecycle callback for consumers that need to react to every completed drag operation.
+
+## Tech Stack
+
+- Dart
+- Flutter
+- Flutter widget / gesture lifecycle
+
+## Notes
+
+This repository is a focused fork/extension of the original `reorderable_grid` package rather than an independent UI application. The main purpose is to demonstrate a small upstream-oriented API improvement driven by a concrete requirement in another Flutter project.
